@@ -1,10 +1,10 @@
 name:                megaparsec-protobuf
 version:             0.1.0.0
-github:              "githubuser/megaparsec-protobuf"
+github:              "noahmartinwilliams/megaparsec-protobuf"
 license:             BSD-3-Clause
-author:              "Author name here"
-maintainer:          "example@example.com"
-copyright:           "2026 Author name here"
+author:              "Noah Martin Williams"
+maintainer:          "noahmartinwilliams@gmail.com"
+copyright:           "2026 Noah Martin Williams"
 
 extra-source-files:
 - README.md
