@@ -18,11 +18,28 @@ pbVarDeclares = do
     void $ S.lexeme (single '=')
     n <- S.lexeme decimal
     void $ S.lexeme (single ';')
-    return (PBufVariable t i n)
+    return (PBufVariable t i n Nothing)
 
-pbVarDeclares' :: ProtoBufParser PBufMessageEntry
-pbVarDeclares' = do
-    v <- pbVarDeclares
+pbVarDeclaresWDefault :: ProtoBufParser PBufVariable 
+pbVarDeclaresWDefault = do
+    t <- S.lexeme pbType
+    i <- S.lexeme pbIdent
+    void $ S.lexeme (single '=')
+    n <- S.lexeme decimal
+    void $ S.lexeme (single '[')
+    void $ S.lexeme (string "default")
+    void $ S.lexeme (single '=')
+    def <- S.lexeme decimal -- For now we'll just do decimals, but this will need to be changed later to include parsing of all possible default values.
+    void $ S.lexeme (single ']')
+    void $ S.lexeme (single ';')
+    return (PBufVariable t i n (Just (show def)))
+
+pbVarDeclares' :: ProtoBufParser PBufVariable
+pbVarDeclares' = ((try pbVarDeclaresWDefault) <|> (try pbVarDeclares))
+
+pbVarDeclares'' :: ProtoBufParser PBufMessageEntry
+pbVarDeclares'' = do
+    v <- pbVarDeclares'
     return (PBMEntryVar v)
 
 pbReserved' :: ProtoBufParser PBufMessageEntry
@@ -31,7 +48,7 @@ pbReserved' = do
     return (PBMEntryReserved r)
 
 pbMessageEntry :: ProtoBufParser PBufMessageEntry 
-pbMessageEntry = pbVarDeclares' <|> pbReserved'
+pbMessageEntry = pbVarDeclares'' <|> pbReserved'
 
 pbMessage :: ProtoBufParser PBufMessage
 pbMessage = do

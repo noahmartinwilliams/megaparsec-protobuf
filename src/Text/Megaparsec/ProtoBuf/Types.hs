@@ -6,7 +6,7 @@ import Text.Megaparsec
 type ProtoBufParser = Parsec Void String 
 
 data PBufType = PBTInt32 | PBTString deriving(Show)
-data PBufVariable = PBufVariable PBufType String Int deriving(Show)
+data PBufVariable = PBufVariable PBufType String Int (Maybe String) deriving(Show)
 data PBufReserved = PBufReservedIdent [String] | PBufReservedNum [Int] deriving(Show)
 
 data PBufMessageEntry = PBMEntryVar PBufVariable | PBMEntryReserved PBufReserved deriving(Show)
