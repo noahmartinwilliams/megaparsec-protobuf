@@ -6,6 +6,7 @@ import Text.Megaparsec
 import Text.Megaparsec.Char
 import Text.Megaparsec.Char.Lexer
 import Text.Megaparsec.ProtoBuf.Ident
+import Text.Megaparsec.ProtoBuf.Reserved
 import Text.Megaparsec.ProtoBuf.Space as S
 import Text.Megaparsec.ProtoBuf.TypeNames
 import Text.Megaparsec.ProtoBuf.Types
@@ -19,12 +20,24 @@ pbVarDeclares = do
     void $ S.lexeme (single ';')
     return (PBufVariable t i n)
 
+pbVarDeclares' :: ProtoBufParser PBufMessageEntry
+pbVarDeclares' = do
+    v <- pbVarDeclares
+    return (PBMEntryVar v)
+
+pbReserved' :: ProtoBufParser PBufMessageEntry
+pbReserved' = do
+    r <- pbReserved
+    return (PBMEntryReserved r)
+
+pbMessageEntry :: ProtoBufParser PBufMessageEntry 
+pbMessageEntry = pbVarDeclares' <|> pbReserved'
+
 pbMessage :: ProtoBufParser PBufMessage
 pbMessage = do
     void $ S.lexeme (string "message")
     i <- S.lexeme pbIdent
     void $ S.lexeme (single '{')
-    vars <- S.lexeme (many pbVarDeclares)
+    entries <- S.lexeme (many pbMessageEntry)
     void $ S.lexeme (single '}')
-    let names = Prelude.map (\(PBufVariable _ s _) -> s) vars
-    return (PBufMessage i (Data.Map.fromList (zip names vars)))
+    return (PBufMessage i entries)
