@@ -25,12 +25,14 @@ source-repository head
 
 library
   exposed-modules:
+      Text.Megaparsec.ProtoBuf.Enum
       Text.Megaparsec.ProtoBuf.Ident
       Text.Megaparsec.ProtoBuf.Message
       Text.Megaparsec.ProtoBuf.Reserved
       Text.Megaparsec.ProtoBuf.Space
       Text.Megaparsec.ProtoBuf.TypeNames
       Text.Megaparsec.ProtoBuf.Types
+      Text.Megaparsec.ProtoBuf.Values
   other-modules:
       Paths_megaparsec_protobuf
   autogen-modules:

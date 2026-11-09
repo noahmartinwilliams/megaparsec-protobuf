@@ -32,7 +32,7 @@ pbVarDeclaresWDefault = do
     def <- S.lexeme decimal -- For now we'll just do decimals, but this will need to be changed later to include parsing of all possible default values.
     void $ S.lexeme (single ']')
     void $ S.lexeme (single ';')
-    return (PBufVariable t i n (Just (show def)))
+    return (PBufVariable t i n (Just (show (def :: Int))))
 
 pbVarDeclares' :: ProtoBufParser PBufVariable
 pbVarDeclares' = ((try pbVarDeclaresWDefault) <|> (try pbVarDeclares))
