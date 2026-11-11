@@ -17,3 +17,5 @@ data PBufEnum = PBufEnum Bool String [PBufEnumEntry] deriving(Show)
 data PBufMessageEntry = PBMEntryVar PBufVariable | PBMEntryReserved PBufReserved deriving(Show)
 data PBufMessage = PBufMessage String [PBufMessageEntry] deriving(Show)
 
+data PBInitValue = PBInitString String String | PBInitInt String Int deriving(Show)
+data PBufInitializer = PBInit [PBInitValue] deriving(Show)
