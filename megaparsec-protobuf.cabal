@@ -27,6 +27,7 @@ library
   exposed-modules:
       Text.Megaparsec.ProtoBuf.Enum
       Text.Megaparsec.ProtoBuf.Ident
+      Text.Megaparsec.ProtoBuf.Initializer
       Text.Megaparsec.ProtoBuf.Message
       Text.Megaparsec.ProtoBuf.Reserved
       Text.Megaparsec.ProtoBuf.Space
