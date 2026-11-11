@@ -15,7 +15,7 @@ pbSimpleEnumEntry = do
     void $ S.lexeme (single '=')
     d <- S.lexeme decimal
     void $ S.lexeme (single ';')
-    return (PBufEnumEntry i d False Nothing)
+    return (PBufEnumEntry i d False )
 
 pbComplicatedEnumEntry :: ProtoBufParser PBufEnumEntry 
 pbComplicatedEnumEntry = do
@@ -28,16 +28,29 @@ pbComplicatedEnumEntry = do
     b <- S.lexeme pbBoolValue
     void $ S.lexeme (single ']')
     void $ S.lexeme (single ';')
-    return (PBufEnumEntry i d b Nothing)
+    return (PBufEnumEntry i d b )
 
 pbEnumEntry :: ProtoBufParser PBufEnumEntry 
 pbEnumEntry = (try pbComplicatedEnumEntry) <|> pbSimpleEnumEntry
+
+pbAllowAliases :: ProtoBufParser Bool
+pbAllowAliases = do
+    void $ S.lexeme (string "option")
+    void $ S.lexeme ((string "allow_aliasing") <|> (string "allow_alias") )
+    void $ S.lexeme (single '=')
+    ret <- S.lexeme pbBoolValue
+    void $ S.lexeme (single ';')
+    return ret
 
 pbEnum :: ProtoBufParser PBufEnum 
 pbEnum = do
     void $ S.lexeme (string "enum")
     i <- S.lexeme pbIdent
     void $ S.lexeme (single '{')
+    allowAliases <- optional pbAllowAliases
     entries <- S.lexeme (some pbEnumEntry )
     void $ S.lexeme (single '}')
-    return (PBufEnum i entries)
+    case allowAliases of
+        (Just True) -> return (PBufEnum True i entries)
+        (Just False) -> return (PBufEnum False i entries)
+        Nothing -> return (PBufEnum False i entries)
