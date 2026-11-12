@@ -25,7 +25,7 @@ source-repository head
 
 library
   exposed-modules:
-      Text.Megaparsec.ProtoBuf.Doc
+      Text.Megaparsec.ProtoBuf
       Text.Megaparsec.ProtoBuf.Enum
       Text.Megaparsec.ProtoBuf.Ident
       Text.Megaparsec.ProtoBuf.Initializer

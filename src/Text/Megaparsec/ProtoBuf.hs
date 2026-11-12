@@ -1,4 +1,4 @@
-module Text.Megaparsec.ProtoBuf.Doc where
+module Text.Megaparsec.ProtoBuf(pbDoc, module Text.Megaparsec.ProtoBuf.Types) where
 
 import Control.Monad
 import Data.List.NonEmpty
@@ -23,7 +23,8 @@ pbDoc = do
     ver <- S.lexeme (pbStringValue)
     void $ S.lexeme (single ';')
     entries <- S.lexeme (some pbDocEntry)
-    let validVers = Set.fromList [Tokens ('p':| "roto3")]
+    let validVers = Set.fromList [Tokens ('p':| "roto3"), Tokens ('p' :| "roto2")]
     case ver of
         "proto3" -> return (PBDoc ProtoBuf3 entries)
+        "proto2" -> return (PBDoc ProtoBuf2 entries)
         x -> failure (Just (Tokens ('v' :| ("ersion: " ++ (show x))))) validVers

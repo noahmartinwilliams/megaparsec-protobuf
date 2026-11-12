@@ -20,6 +20,6 @@ data PBufMessage = PBufMessage String [PBufMessageEntry] deriving(Show)
 data PBInitValue = PBInitString String | PBInitInt Int deriving(Show)
 data PBufInitializer = PBInit [(String, PBInitValue)] deriving(Show)
 
-data PBVersion = ProtoBuf3 deriving(Show)
+data PBVersion = ProtoBuf3 | ProtoBuf2 deriving(Show)
 data PBDocEntry = PBDocMessage PBufMessage deriving(Show)
 data PBDoc = PBDoc PBVersion [PBDocEntry] deriving(Show)
